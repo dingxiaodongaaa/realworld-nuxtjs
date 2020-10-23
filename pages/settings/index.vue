@@ -99,7 +99,7 @@ export default {
       Cookie.set("user", data.user);
 
       // 跳转到个人主页
-      this.$router.push("/profile/123");
+      this.$router.push(`/profile/${data.user.username}`);
     },
     logout () {
       this.setUser(null)
