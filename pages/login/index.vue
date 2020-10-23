@@ -97,7 +97,6 @@ export default {
             user: this.user
           })
 
-        console.log(data)
         // TODO：保存用户的登录状态
         this.$store.commit('setUser', data.user)
 
@@ -107,9 +106,7 @@ export default {
         // 跳转到首页
         this.$router.push('/')
       } catch (err) {
-        console.dir(err)
         this.errors = err.response.data.errors
-        console.log(this.errors)
       }
     }
   }
