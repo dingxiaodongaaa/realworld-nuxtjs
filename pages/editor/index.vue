@@ -9,6 +9,7 @@
                 <input
                   type="text"
                   class="form-control form-control-lg"
+                  v-model="article.title"
                   placeholder="Article Title"
                 />
               </fieldset>
@@ -16,6 +17,7 @@
                 <input
                   type="text"
                   class="form-control"
+                  v-model="article.description"
                   placeholder="What's this article about?"
                 />
               </fieldset>
@@ -23,6 +25,7 @@
                 <textarea
                   class="form-control"
                   rows="8"
+                  v-model="article.body"
                   placeholder="Write your article (in markdown)"
                 ></textarea>
               </fieldset>
@@ -30,13 +33,26 @@
                 <input
                   type="text"
                   class="form-control"
+                  v-model="articleTag"
+                  @keypress.enter="enterTag"
                   placeholder="Enter tags"
                 />
-                <div class="tag-list"></div>
+                <div class="tag-list">
+                  <span
+                    class="tag-default tag-pill"
+                    v-for="tag in article.tagList"
+                    :key="tag"
+                  >
+                    <i class="ion-close-round" @click="removeTag(tag)"></i>
+                    {{ tag }}
+                  </span>
+                </div>
               </fieldset>
               <button
                 class="btn btn-lg pull-xs-right btn-primary"
                 type="button"
+                @click="publishArticle"
+                :disabled="publishDisabled"
               >
                 Publish Article
               </button>
@@ -49,10 +65,57 @@
 </template>
 
 <script>
+import { createArticle, getArticle, updateArticle } from "@/api/article";
+
 export default {
   // 在路由匹配组件渲染之前会先执行中间件处理
-  middleware: ['authenticated'],
-  name: 'EditorIndex'
+  middleware: ["authenticated"],
+  name: "EditorIndex",
+  data() {
+    return {
+      publishDisabled: false,
+      articleTag: '',
+      article: {
+        title: "",
+        description: "",
+        body: "",
+        tagList: [],
+      },
+    };
+  },
+  async created () {
+    if (this.$route.params.slug) {
+      const { data } = await getArticle(this.$route.params.slug)
+      this.article = data.article
+    }
+  },
+  methods: {
+    enterTag () {
+      if (this.article.tagList.indexOf(this.articleTag) === -1) {
+        this.article.tagList.push(this.articleTag)
+        this.articleTag = ''
+      }
+    },
+    removeTag (tag) {
+      this.article.tagList.splice(this.article.tagList.indexOf(tag), 1)
+    },
+    async publishArticle () {
+      this.publishDisabled = true
+      const { data } = this.$route.params.slug 
+      ? await updateArticle({
+        article: this.article,
+      }, this.$route.params.slug )
+      : await createArticle ({
+        article: this.article
+      })
+      this.$router.push({
+        name: 'article',
+        params: {
+          slug: data.article.slug
+        }
+      })
+    }
+  }
 };
 </script>
 
