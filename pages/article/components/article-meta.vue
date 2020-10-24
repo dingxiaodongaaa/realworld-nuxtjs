@@ -23,7 +23,7 @@
       <span class="date">{{ article.createdAt | date("MMM DD, YYYY") }}</span>
     </div>
 
-    <template v-if="article.author.username != $store.state.user.username">
+    <template v-if="$store.state.user && (article.author.username != $store.state.user.username)">
       <button
         class="btn btn-sm btn-outline-secondary"
         @click="onFollow"
@@ -47,7 +47,7 @@
       </button>
     </template>
 
-    <template v-else>
+    <template v-else v-show="$store.state.user">
       <nuxt-link
         class="btn btn-outline-secondary btn-sm"
         :to="{

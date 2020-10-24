@@ -11,7 +11,7 @@
         ></textarea>
       </div>
       <div class="card-footer">
-        <img :src="$store.state.user.image" class="comment-author-img" />
+        <img :src="$store.state.user && $store.state.user.image" class="comment-author-img" />
         <button class="btn btn-sm btn-primary" :disabled="postCommentDisabled">
           Post Comment
         </button>

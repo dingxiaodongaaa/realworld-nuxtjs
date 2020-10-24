@@ -5,7 +5,8 @@
   "scripts": {
     "dev": "nuxt",
     "build": "nuxt build",
-    "start": "nuxt start"
+    "start": "nuxt start",
+    "generate": "nuxt generate"
   },
   "author": "dingxd <dingxiaodongaaa@163.com> (https://github.com/dingxiaodongaaa)",
   "license": "MIT",

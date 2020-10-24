@@ -22,7 +22,7 @@ export const actions = {
     let user = null
     
     // 如果请求头中由 cookie
-    if (req.headers.cookie) {
+    if (req && req.headers.cookie) {
       // 使用 cookieparser 把 cookie 字符串转换为 js 对象
       const parsed = cookieparser.parse(req.headers.cookie)
       try {

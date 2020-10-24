@@ -132,7 +132,6 @@ import { getArticles, addFavorite, deleteFavorite } from "@/api/article";
 import { getProfile } from "@/api/user";
 
 export default {
-  middleware: ["authenticated"],
   name: "UserProfile",
   data() {
     return {
